@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tax work items — practice dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Zilla+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1a24;
+    --panel:#132430;
+    --line:#22394a;
+    --ink:#e9e2d4;
+    --muted:#7b93a3;
+    --amber:#e6a33c;
+    --blue:#6ea1cf;
+    --sage:#82c3a5;
+    --rust:#e0765a;
+    --slate:#5f7d92;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:14px;
+    line-height:1.5;
+    padding:38px 30px 80px;
+  }
+  .wrap{max-width:1240px;margin:0 auto}
+
+  .eyebrow{
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 10px;
+  }
+  h1{
+    font-family:"Zilla Slab",Georgia,serif;
+    font-weight:700;font-size:44px;line-height:1.05;
+    margin:0 0 14px;letter-spacing:-.01em;
+  }
+  .standfirst{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 30px;
+  }
+  .standfirst b{color:var(--ink);font-weight:600}
+
+  /* ---- stat row ---- */
+  .stats{
+    display:grid;grid-template-columns:repeat(5,1fr);
+    border:1px solid var(--line);margin-bottom:26px;
+  }
+  .stat{padding:18px 20px 20px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:0}
+  .stat .k{
+    font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:10px;
+  }
+  .stat .v{
+    font-family:"Zilla Slab",Georgia,serif;
+    font-size:38px;font-weight:600;line-height:1;margin-bottom:8px;
+  }
+  .stat .s{font-size:11px;color:var(--muted)}
+  .v.warn{color:var(--rust)}
+  .v.hot{color:var(--amber)}
+
+  /* ---- proportion bar ---- */
+  .bar{display:flex;height:26px;margin-bottom:12px;overflow:hidden}
+  .bar span{
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:600;color:#0e1a24;
+  }
+  .legend{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:36px}
+  .legend div{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .legend i{
+    display:inline-block;width:9px;height:9px;margin-right:7px;
+    vertical-align:baseline;
+  }
+  .legend b{color:var(--ink);margin-left:5px;font-weight:600}
+
+  /* ---- register ---- */
+  h2{
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    font-weight:600;color:var(--ink);margin:0 0 12px;font-family:"IBM Plex Mono",monospace;
+  }
+  .rule{height:1px;background:var(--line);margin-bottom:18px}
+  .note{color:var(--muted);font-size:13px;max-width:62ch;margin:0 0 22px}
+  .note em{color:var(--ink);font-style:italic}
+
+  .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+  .filters label{
+    font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  }
+  select{
+    appearance:none;
+    background:var(--panel) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0h10L5 6z' fill='%237b93a3'/></svg>") no-repeat right 11px center;
+    color:var(--ink);border:1px solid var(--line);
+    font-family:inherit;font-size:13px;padding:8px 30px 8px 12px;cursor:pointer;
+  }
+  select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  button{
+    background:none;color:var(--ink);border:1px solid var(--line);
+    font-family:inherit;font-size:13px;padding:8px 14px;cursor:pointer;
+  }
+  button:hover{border-color:var(--amber);color:var(--amber)}
+  .count{font-size:12px;color:var(--muted);text-align:right;margin:0 0 14px}
+
+  table{width:100%;border-collapse:collapse}
+  thead th{
+    font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;text-align:left;
+    padding:0 12px 10px;border-bottom:1px solid var(--line);
+  }
+  thead th.r{text-align:right}
+  thead th.c{text-align:center}
+  tbody td{padding:15px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tbody tr:hover{background:rgba(255,255,255,.022)}
+  .client{font-size:14px}
+  .sub{font-size:11px;color:var(--muted);margin-top:3px}
+  td.r{text-align:right}
+  td.c{text-align:center}
+
+  .pill{
+    display:inline-block;font-size:11px;padding:5px 12px;
+    border:1px solid;white-space:nowrap;
+  }
+  .pill.prog{color:var(--blue);border-color:var(--blue)}
+  .pill.ready{color:var(--slate);border-color:var(--slate)}
+  .pill.done{color:var(--sage);border-color:var(--sage)}
+
+  .form{font-size:13px}
+  .due{font-size:13px}
+  .due .days{font-size:11px;color:var(--muted);margin-top:3px}
+  .due.late .days{color:var(--rust)}
+  .due.late .date{color:var(--rust)}
+  .due.soon .days{color:var(--amber)}
+
+  a.k{color:var(--amber);text-decoration:underline;text-underline-offset:3px;font-size:13px}
+  a.k:hover{color:var(--ink)}
+
+  .empty{padding:40px 12px;color:var(--muted);font-size:13px}
+
+  @media (max-width:960px){
+    body{padding:26px 16px 60px}
+    h1{font-size:32px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stat{border-bottom:1px solid var(--line)}
+    .stat:nth-child(odd){border-right:1px solid var(--line)}
+    .stat:nth-child(even){border-right:0}
+    thead th:nth-child(3),tbody td:nth-child(3),
+    thead th:nth-child(4),tbody td:nth-child(4){display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Internal reporting</p>
+  <h1>Tax work items</h1>
+  <p class="standfirst">
+    Live from Karbon &middot; synced <b id="synced">—</b> &middot; Karbon remains the source of record
+  </p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="bar" id="bar"></div>
+  <div class="legend" id="legend"></div>
+
+  <h2>Work item register</h2>
+  <div class="rule"></div>
+  <p class="note">
+    Read-only. Filter to one assignee for a personal queue, or set deadline to
+    <em>Overdue</em> to see what has already slipped.
+  </p>
+
+  <div class="filters">
+    <label for="fa">Assignee</label>
+    <select id="fa"><option value="">Everyone</option></select>
+    <label for="ff">Form</label>
+    <select id="ff"><option value="">All forms</option></select>
+    <label for="fs">Status</label>
+    <select id="fs"><option value="">Any status</option></select>
+    <label for="fd">Deadline</label>
+    <select id="fd">
+      <option value="">All dates</option>
+      <option value="late">Overdue</option>
+      <option value="30">Next 30 days</option>
+      <option value="60">Next 60 days</option>
+    </select>
+    <button id="clear" type="button">Clear filters</button>
+  </div>
+  <p class="count" id="count"></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th class="c">Status</th>
+        <th>Form</th>
+        <th>Work title</th>
+        <th>Assignee</th>
+        <th class="r">Due</th>
+        <th class="r">Karbon</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+</div>
+
+<script>
+const SYNCED = "2026-08-19 12:18 UTC";
+
+const DATA = [["2gHrzmXd3htc", "1040 Tax Returns - 2022", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-07"], ["YC7R1Y3Bvl4", "1040 Tax Returns - 2025", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-07"], ["p4jChbNr7RQ", "1040 Tax Returns - 2023", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-07"], ["23kjMG1RhCDb", "1040 Tax Returns - 2024", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-07"], ["2B5xjPBV5q3n", "1040 Tax Returns - 2021 - 2025", "Gavin Macmillan", "In Progress", "Flor Acosta", "2026-08-28"], ["zyZfntyGpLr", "1120S Tax Returns - 2021 - 2025", "Sport Science Lab, LLC", "Ready To Start", "Romil Anhao", "2026-08-28"], ["2grXt5hRCLPV", "1040 Tax Returns - 2024", "Shannon Stephenson", "Ready To Start", "Flor Acosta", "2026-09-15"], ["2BtVWYcPR6gR", "Tax 1040 — 2025", "Pavan/Saloni Luckoor", "Ready To Start", "Flor Acosta", "2026-09-15"], ["3lCMbN2mpVXG", "Tax 1040 — 2025", "Arun Luckoor", "Ready To Start", "Flor Acosta", "2026-09-15"], ["4vQh8f2gTrNw", "Tax 1040 — 2025", "Shobha Luckoor", "Ready To Start", "Flor Acosta", "2026-09-15"], ["46lX2YPgvQqc", "Tax 1040 — 2025", "Zach Wagner", "Ready To Start", "Thea Ruyeras", "2026-09-15"], ["4gM8J6xT7np8", "Tax 1065 — 2025", "SUN RS LLC", "Ready To Start", "Thea Ruyeras", "2026-09-15"]].map(r => ({
+  id:r[0], title:r[1], client:r[2], status:r[3], who:r[4], due:r[5],
+  form:(r[1].match(/1120S|1120|1065|1041|1040/)||["—"])[0],
+  link:"https://app2.karbonhq.com/2GXQkWNYYRPp/work/"+r[0]
+}));
+
+const TODAY = new Date("2026-08-19T00:00:00Z");
+const dayDiff = d => Math.round((new Date(d+"T00:00:00Z") - TODAY)/86400000);
+
+const STATUS_STYLE = {"In Progress":["prog","var(--blue)"],"Ready To Start":["ready","var(--slate)"],"Complete":["done","var(--sage)"]};
+
+const $ = id => document.getElementById(id);
+document.getElementById("synced").textContent = SYNCED;
+
+/* ---------- summary ---------- */
+function summary(){
+  const late = DATA.filter(d=>dayDiff(d.due)<0);
+  const prog = DATA.filter(d=>d.status==="In Progress");
+  const next = DATA.filter(d=>dayDiff(d.due)>=0).sort((a,b)=>a.due<b.due?-1:1)[0];
+  const nextCount = next ? DATA.filter(d=>d.due===next.due).length : 0;
+  const fmt = s => s ? s.slice(5).replace("-","/") : "—";
+
+  $("stats").innerHTML = [
+    ["Work items", DATA.length, "open tax returns", ""],
+    ["Overdue", late.length, late.length ? "past the due date" : "nothing late", late.length?"warn":""],
+    ["In progress", prog.length, "actively being worked", ""],
+    ["Ready to start", DATA.length-prog.length-late.filter(d=>d.status!=="In Progress").length>=0 ? DATA.filter(d=>d.status==="Ready To Start").length : 0, "not yet picked up", "hot"],
+    ["Next deadline", fmt(next&&next.due), next?dayDiff(next.due)+" days out · "+nextCount+" items":"—", ""]
+  ].map(s=>`<div class="stat"><div class="k">${s[0]}</div><div class="v ${s[3]}">${s[1]}</div><div class="s">${s[2]}</div></div>`).join("");
+}
+
+/* ---------- proportion bar ---------- */
+function proportions(){
+  const order=["In Progress","Ready To Start","Complete"];
+  const counts=order.map(s=>[s,DATA.filter(d=>d.status===s).length]).filter(x=>x[1]>0);
+  const total=counts.reduce((a,b)=>a+b[1],0);
+  $("bar").innerHTML=counts.map(([s,n])=>
+    `<span style="width:${n/total*100}%;background:${STATUS_STYLE[s][1]}">${n}</span>`).join("");
+  $("legend").innerHTML=counts.map(([s,n])=>
+    `<div><i style="background:${STATUS_STYLE[s][1]}"></i>${s}<b>${n}</b></div>`).join("");
+}
+
+/* ---------- filters ---------- */
+function fill(sel,vals){
+  vals.sort().forEach(v=>{
+    const o=document.createElement("option"); o.value=v; o.textContent=v; $(sel).appendChild(o);
+  });
+}
+fill("fa",[...new Set(DATA.map(d=>d.who))]);
+fill("ff",[...new Set(DATA.map(d=>d.form))]);
+fill("fs",[...new Set(DATA.map(d=>d.status))]);
+
+function render(){
+  const a=$("fa").value, f=$("ff").value, s=$("fs").value, d=$("fd").value;
+  const rows=DATA.filter(r=>{
+    if(a&&r.who!==a) return false;
+    if(f&&r.form!==f) return false;
+    if(s&&r.status!==s) return false;
+    const n=dayDiff(r.due);
+    if(d==="late"&&n>=0) return false;
+    if(d==="30"&&(n<0||n>30)) return false;
+    if(d==="60"&&(n<0||n>60)) return false;
+    return true;
+  }).sort((x,y)=>x.due<y.due?-1:x.due>y.due?1:0);
+
+  $("count").textContent = rows.length===DATA.length
+    ? `Showing all ${DATA.length} items`
+    : `Showing ${rows.length} of ${DATA.length} items`;
+
+  if(!rows.length){
+    $("rows").innerHTML=`<tr><td colspan="7" class="empty">No work items match these filters. Clear one to widen the search.</td></tr>`;
+    return;
+  }
+
+  $("rows").innerHTML=rows.map(r=>{
+    const n=dayDiff(r.due);
+    const cls=n<0?"late":n<=14?"soon":"";
+    const days=n<0?`${Math.abs(n)} days overdue`:n===0?"due today":`${n} days out`;
+    return `<tr>
+      <td class="client">${r.client}</td>
+      <td class="c"><span class="pill ${STATUS_STYLE[r.status][0]}">${r.status}</span></td>
+      <td class="form">${r.form}</td>
+      <td class="sub" style="font-size:12px">${r.title}</td>
+      <td>${r.who}</td>
+      <td class="r"><div class="due ${cls}"><div class="date">${r.due.slice(5).replace("-","/")}</div><div class="days">${days}</div></div></td>
+      <td class="r"><a class="k" href="${r.link}" target="_blank" rel="noopener">Open</a></td>
+    </tr>`;
+  }).join("");
+}
+
+["fa","ff","fs","fd"].forEach(id=>$(id).addEventListener("change",render));
+$("clear").addEventListener("click",()=>{["fa","ff","fs","fd"].forEach(id=>$(id).value="");render();});
+
+summary(); proportions(); render();
+</script>
+</body>
+</html>
