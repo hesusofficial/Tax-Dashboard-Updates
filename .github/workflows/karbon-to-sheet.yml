@@ -1,25 +1,26 @@
-name: Test Snowflake connection
- 
-# Manual only -- no schedule. Run from the Actions tab when you want to check.
+name: Karbon KPI to Google Sheet
+
 on:
+  schedule:
+    - cron: "0 5 * * *"
   workflow_dispatch:
- 
+
 jobs:
-  test:
+  sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
- 
+    timeout-minutes: 15
+
     steps:
       - uses: actions/checkout@v4
- 
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
- 
-      - run: pip install -r requirements.txt
- 
-      - name: Test connection
+
+      - name: Install
+        run: pip install snowflake-connector-python gspread google-auth
+
+      - name: Sync
         env:
           SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
           SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
@@ -27,4 +28,6 @@ jobs:
           SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
           SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
           SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
-        run: python test_connection.py
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+        run: python sync_tax_data.py
