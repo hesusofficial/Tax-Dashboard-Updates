@@ -5,11 +5,11 @@ import gspread
 from datetime import datetime, timezone
 from google.oauth2.service_account import Credentials
 
-raw = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
+raw = os.environ.get("GOOGLE_CREDENTIALS_JSON")
 sheet_id = os.environ.get("GOOGLE_SHEET_ID")
 
 if not raw:
-    sys.exit("FAIL: GOOGLE_SERVICE_ACCOUNT_JSON is empty")
+    sys.exit("FAIL: GOOGLE_CREDENTIALS_JSON is empty")
 if not sheet_id:
     sys.exit("FAIL: GOOGLE_SHEET_ID is empty")
 
