@@ -9,9 +9,18 @@ import snowflake.connector
 from google.oauth2.service_account import Credentials
 
 QUERY = """
-SELECT *
-FROM KPI_DATABASE.SECURE_VIEWS.WORK_ITEM_DETAILS
-WHERE WORK_TYPE = 'Tax Returns'
+select
+work_item_id,
+work_title,
+client,
+work_type,
+primary_status,
+assigned_to,
+due_datetime,
+work_template,
+from work_item_details
+where work_type = 'Tax Returns'
+and work_template is not null
 """
 
 TAB_NAME = "tax_returns"
