@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-from datetime import date, datetime, timezone
+from datetime import date, datetime
 from decimal import Decimal
 
 import gspread
@@ -82,18 +82,13 @@ def push(columns, rows):
         )
         print("Created tab " + TAB_NAME)
 
-    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    values = [
-        ["Last updated " + stamp + "  |  " + str(len(rows)) + " rows"],
-        [],
-        list(columns),
-    ]
+    values = [list(columns)]
     values.extend([[cell(v) for v in row] for row in rows])
 
     ws.clear()
     ws.update(values=values, range_name="A1")
-    ws.format("3:3", {"textFormat": {"bold": True}})
-    ws.freeze(rows=3)
+    ws.format("1:1", {"textFormat": {"bold": True}})
+    ws.freeze(rows=1)
     print("Wrote " + str(len(rows)) + " rows to tab " + TAB_NAME)
 
 
