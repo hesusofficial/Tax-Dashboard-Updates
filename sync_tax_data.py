@@ -10,17 +10,18 @@ from google.oauth2.service_account import Credentials
 
 QUERY = """
 select
-work_item_id,
-work_title,
-client,
-work_type,
-primary_status,
-assigned_to,
-due_datetime,
-work_template,
+    work_item_id,
+    'https://app2.karbonhq.com/2GXQkWNYYRPp/work/' || work_item_id as work_link,
+    work_title,
+    client,
+    work_type,
+    primary_status,
+    assigned_to,
+    due_datetime,
+    work_template
 from work_item_details
 where work_type = 'Tax Returns'
-and work_template is not null
+    and work_template is not null
 """
 
 TAB_NAME = "tax_returns"
