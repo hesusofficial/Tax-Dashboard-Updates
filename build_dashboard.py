@@ -18,7 +18,7 @@ select
     work_item_id,
     work_title,
     client,
-    primary_status,
+    coalesce(secondary_status, primary_status) as status,
     assigned_to,
     due_datetime
 from work_item_details
