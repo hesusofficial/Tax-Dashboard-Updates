@@ -129,6 +129,9 @@
   .pill.prog{color:var(--blue);border-color:var(--blue)}
   .pill.ready{color:var(--slate);border-color:var(--slate)}
   .pill.done{color:var(--sage);border-color:var(--sage)}
+  .pill.wait{color:var(--amber);border-color:var(--amber)}
+  .pill.review{color:var(--sage);border-color:var(--sage)}
+  .pill.unknown{color:var(--muted);border-color:var(--muted)}
 
   .form{font-size:13px}
   .due{font-size:13px}
@@ -212,7 +215,7 @@
 </div>
 
 <script>
-const SYNCED = "2026-08-20 06:43 UTC";
+const SYNCED = "2026-08-20 06:55 UTC";
 
 const DATA = [["YC7R1Y3Bvl4", "1040 Tax Returns - 2025", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-07"], ["p4jChbNr7RQ", "1040 Tax Returns - 2023", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-07"], ["2gHrzmXd3htc", "1040 Tax Returns - 2022", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-24"], ["23kjMG1RhCDb", "1040 Tax Returns - 2024", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-24"], ["zyZfntyGpLr", "1120S Tax Returns - 2021 - 2025", "Sport Science Lab, LLC", "Waiting", "Romil Anhao", "2026-08-28"], ["2B5xjPBV5q3n", "1040 Tax Returns - 2021 - 2025", "Gavin Macmillan", "In Progress", "Flor Acosta", "2026-08-28"], ["4gM8J6xT7np8", "Tax 1065 — 2025", "SUN RS LLC", "Ready To Start", "Thea Ruyeras", "2026-09-15"], ["2grXt5hRCLPV", "1040 Tax Returns - 2024", "Shannon Stephenson", "Ready To Start", "Flor Acosta", "2026-09-15"], ["3lCMbN2mpVXG", "Tax 1040 — 2025", "Arun Luckoor", "Ready To Start", "Flor Acosta", "2026-09-15"], ["2BtVWYcPR6gR", "Tax 1040 — 2025", "Pavan/Saloni Luckoor", "Waiting", "Flor Acosta", "2026-09-15"], ["4vQh8f2gTrNw", "Tax 1040 — 2025", "Shobha Luckoor", "Ready To Start", "Flor Acosta", "2026-09-15"], ["46lX2YPgvQqc", "Tax 1040 — 2025", "Zach Wagner", "Ready To Start", "Thea Ruyeras", "2026-09-15"]].map(r => ({
   id:r[0], title:r[1], client:r[2], status:r[3], who:r[4], due:r[5],
@@ -223,7 +226,17 @@ const DATA = [["YC7R1Y3Bvl4", "1040 Tax Returns - 2025", "Dana Stephenson", "In 
 const TODAY = new Date("2026-08-20T00:00:00Z");
 const dayDiff = d => Math.round((new Date(d+"T00:00:00Z") - TODAY)/86400000);
 
-const STATUS_STYLE = {"In Progress":["prog","var(--blue)"],"Ready To Start":["ready","var(--slate)"],"Complete":["done","var(--sage)"]};
+const STATUS_STYLE = {
+  "In Progress":["prog","var(--blue)"],
+  "Ready To Start":["ready","var(--slate)"],
+  "Complete":["done","var(--sage)"],
+  "Waiting For Client":["wait","var(--amber)"],
+  "Waiting on Client":["wait","var(--amber)"],
+  "In Review":["review","var(--sage)"],
+  "Review":["review","var(--sage)"]
+};
+// Any status not listed above still renders, in neutral grey.
+const styleFor = s => STATUS_STYLE[s] || ["unknown","var(--muted)"];
 
 const $ = id => document.getElementById(id);
 document.getElementById("synced").textContent = SYNCED;
@@ -240,20 +253,22 @@ function summary(){
     ["Work items", DATA.length, "open tax returns", ""],
     ["Overdue", late.length, late.length ? "past the due date" : "nothing late", late.length?"warn":""],
     ["In progress", prog.length, "actively being worked", ""],
-    ["Ready to start", DATA.length-prog.length-late.filter(d=>d.status!=="In Progress").length>=0 ? DATA.filter(d=>d.status==="Ready To Start").length : 0, "not yet picked up", "hot"],
+    ["Ready to start", DATA.filter(d=>d.status==="Ready To Start").length, "not yet picked up", "hot"],
     ["Next deadline", fmt(next&&next.due), next?dayDiff(next.due)+" days out · "+nextCount+" items":"—", ""]
   ].map(s=>`<div class="stat"><div class="k">${s[0]}</div><div class="v ${s[3]}">${s[1]}</div><div class="s">${s[2]}</div></div>`).join("");
 }
 
 /* ---------- proportion bar ---------- */
 function proportions(){
-  const order=["In Progress","Ready To Start","Complete"];
-  const counts=order.map(s=>[s,DATA.filter(d=>d.status===s).length]).filter(x=>x[1]>0);
-  const total=counts.reduce((a,b)=>a+b[1],0);
-  $("bar").innerHTML=counts.map(([s,n])=>
-    `<span style="width:${n/total*100}%;background:${STATUS_STYLE[s][1]}">${n}</span>`).join("");
-  $("legend").innerHTML=counts.map(([s,n])=>
-    `<div><i style="background:${STATUS_STYLE[s][1]}"></i>${s}<b>${n}</b></div>`).join("");
+  const known=["In Progress","Ready To Start","Complete"];
+  const seen=[...new Set(DATA.map(d=>d.status))];
+  const ordered=[...known.filter(x=>seen.includes(x)),...seen.filter(x=>!known.includes(x)).sort()];
+  const counts=ordered.map(x=>[x,DATA.filter(d=>d.status===x).length]).filter(x=>x[1]>0);
+  const total=counts.reduce((a,b)=>a+b[1],0)||1;
+  $("bar").innerHTML=counts.map(([x,n])=>
+    `<span style="width:${n/total*100}%;background:${styleFor(x)[1]}">${n}</span>`).join("");
+  $("legend").innerHTML=counts.map(([x,n])=>
+    `<div><i style="background:${styleFor(x)[1]}"></i>${x}<b>${n}</b></div>`).join("");
 }
 
 /* ---------- filters ---------- */
@@ -294,7 +309,7 @@ function render(){
     const days=n<0?`${Math.abs(n)} days overdue`:n===0?"due today":`${n} days out`;
     return `<tr>
       <td class="client">${r.client}</td>
-      <td class="c"><span class="pill ${STATUS_STYLE[r.status][0]}">${r.status}</span></td>
+      <td class="c"><span class="pill ${styleFor(r.status)[0]}">${r.status}</span></td>
       <td class="form">${r.form}</td>
       <td class="sub" style="font-size:12px">${r.title}</td>
       <td>${r.who}</td>
@@ -307,7 +322,13 @@ function render(){
 ["fa","ff","fs","fd"].forEach(id=>$(id).addEventListener("change",render));
 $("clear").addEventListener("click",()=>{["fa","ff","fs","fd"].forEach(id=>$(id).value="");render();});
 
-summary(); proportions(); render();
+try {
+  summary(); proportions(); render();
+} catch (err) {
+  console.error(err);
+  $("rows").innerHTML =
+    `<tr><td colspan="7" class="empty">Something went wrong rendering this table (${err.message}). The data is still in the page source.</td></tr>`;
+}
 </script>
 </body>
 </html>
