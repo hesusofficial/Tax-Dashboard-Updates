@@ -23,6 +23,7 @@ select
     due_datetime
 from work_item_details
 where work_type = 'Tax Returns'
+  and work_item_id not in ('2B5xjPBV5q3n', 'zyZfntyGpLr')
   and (
     work_template is not null
     or work_item_id in (
