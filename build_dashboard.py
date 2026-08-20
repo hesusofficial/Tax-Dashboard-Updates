@@ -23,7 +23,16 @@ select
     due_datetime
 from work_item_details
 where work_type = 'Tax Returns'
-    and work_template is not null
+  and (
+    work_template is not null
+    or work_item_id in (
+      '43PWNDsNRTrG','47ljmmdVL7x8','BYPSYgMzwpZ','2c64XtbHlz4Q','XyR5wQnVRpw',
+      'YJ1vX3mb5jZ','3ZR6l73FCVVL','bqsBZGJF2cZ','CbWng3spZ9v','T9hsfCpZb9J',
+      '4c8YSsS5Cwt','WhzgWhT1FR7','F1bl4hwvTrd','9YzvRWpt4q8','4fPPBrxqVDfw',
+      '46nRmWQxrw2r','N2nq5mqXqQW','bMwyS8XVb9x','3Jl1GjjlHcJL','4CYQQh1fND7t',
+      '4ysJf8lRVpJQ','4bchmx6RDFFg','4n9pq4grz656','2cF2Ln7vkhZl','2lrbcvnYkFR9'
+    )
+  )
 order by due_datetime
 """
 
