@@ -11,6 +11,7 @@
   :root{
     --bg:#0e1a24;
     --panel:#132430;
+    --panel2:#18303e;
     --line:#22394a;
     --ink:#e9e2d4;
     --muted:#7b93a3;
@@ -19,143 +20,156 @@
     --sage:#82c3a5;
     --rust:#e0765a;
     --slate:#5f7d92;
+    --violet:#9b8bc4;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    background:var(--bg);
-    color:var(--ink);
+    background:var(--bg);color:var(--ink);
     font-family:"IBM Plex Mono",ui-monospace,monospace;
-    font-size:14px;
-    line-height:1.5;
-    padding:38px 30px 80px;
+    font-size:14px;line-height:1.5;padding:38px 30px 90px;
   }
-  .wrap{max-width:1240px;margin:0 auto}
+  .wrap{max-width:1320px;margin:0 auto}
 
-  .eyebrow{
-    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--muted);margin:0 0 10px;
-  }
-  h1{
-    font-family:"Zilla Slab",Georgia,serif;
-    font-weight:700;font-size:44px;line-height:1.05;
-    margin:0 0 14px;letter-spacing:-.01em;
-  }
-  .standfirst{
-    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--muted);margin:0 0 30px;
-  }
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+  h1{font-family:"Zilla Slab",Georgia,serif;font-weight:700;font-size:44px;line-height:1.05;margin:0 0 14px;letter-spacing:-.01em}
+  .standfirst{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 30px}
   .standfirst b{color:var(--ink);font-weight:600}
 
-  /* ---- stat row ---- */
-  .stats{
-    display:grid;grid-template-columns:repeat(5,1fr);
-    border:1px solid var(--line);margin-bottom:26px;
-  }
+  /* ---- stats ---- */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--line);margin-bottom:26px}
   .stat{padding:18px 20px 20px;border-right:1px solid var(--line)}
   .stat:last-child{border-right:0}
-  .stat .k{
-    font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--muted);margin-bottom:10px;
-  }
-  .stat .v{
-    font-family:"Zilla Slab",Georgia,serif;
-    font-size:38px;font-weight:600;line-height:1;margin-bottom:8px;
-  }
+  .stat .k{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .stat .v{font-family:"Zilla Slab",Georgia,serif;font-size:38px;font-weight:600;line-height:1;margin-bottom:8px}
   .stat .s{font-size:11px;color:var(--muted)}
   .v.warn{color:var(--rust)}
   .v.hot{color:var(--amber)}
 
   /* ---- proportion bar ---- */
   .bar{display:flex;height:26px;margin-bottom:12px;overflow:hidden}
-  .bar span{
-    display:flex;align-items:center;justify-content:center;
-    font-size:11px;font-weight:600;color:#0e1a24;
-  }
-  .legend{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:36px}
+  .bar span{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#0e1a24;min-width:0}
+  .legend{display:flex;gap:9px 22px;flex-wrap:wrap;margin-bottom:36px}
   .legend div{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-  .legend i{
-    display:inline-block;width:9px;height:9px;margin-right:7px;
-    vertical-align:baseline;
-  }
+  .legend i{display:inline-block;width:9px;height:9px;margin-right:7px}
   .legend b{color:var(--ink);margin-left:5px;font-weight:600}
 
   /* ---- register ---- */
-  h2{
-    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-    font-weight:600;color:var(--ink);margin:0 0 12px;font-family:"IBM Plex Mono",monospace;
-  }
+  h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--ink);margin:0 0 12px}
   .rule{height:1px;background:var(--line);margin-bottom:18px}
-  .note{color:var(--muted);font-size:13px;max-width:62ch;margin:0 0 22px}
+  .note{color:var(--muted);font-size:13px;max-width:66ch;margin:0 0 22px}
   .note em{color:var(--ink);font-style:italic}
 
-  .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
-  .filters label{
-    font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  /* ---- filter bar ---- */
+  .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+  .flabel{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+  .search{position:relative}
+  .search input{
+    background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    font-family:inherit;font-size:13px;padding:8px 30px 8px 12px;width:210px;
   }
-  select{
-    appearance:none;
-    background:var(--panel) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0h10L5 6z' fill='%237b93a3'/></svg>") no-repeat right 11px center;
-    color:var(--ink);border:1px solid var(--line);
+  .search input::placeholder{color:var(--muted)}
+  .search input:focus{outline:none;border-color:var(--amber)}
+  .search .x{
+    position:absolute;right:6px;top:50%;transform:translateY(-50%);
+    background:none;border:0;color:var(--muted);cursor:pointer;font-size:15px;
+    padding:0 5px;line-height:1;display:none;
+  }
+  .search .x:hover{color:var(--amber)}
+
+  /* ---- multiselect ---- */
+  .ms{position:relative}
+  .ms>button{
+    background:var(--panel);border:1px solid var(--line);color:var(--ink);
     font-family:inherit;font-size:13px;padding:8px 30px 8px 12px;cursor:pointer;
+    text-align:left;min-width:150px;position:relative;
   }
-  select:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
-  button{
+  .ms>button:after{
+    content:"";position:absolute;right:11px;top:50%;margin-top:-3px;
+    border-left:5px solid transparent;border-right:5px solid transparent;
+    border-top:6px solid var(--muted);
+  }
+  .ms>button:hover{border-color:var(--slate)}
+  .ms.on>button{border-color:var(--amber)}
+  .ms.active>button{color:var(--amber)}
+  .panel{
+    display:none;position:absolute;z-index:40;top:calc(100% + 4px);left:0;
+    background:var(--panel2);border:1px solid var(--line);
+    min-width:100%;max-height:320px;overflow-y:auto;padding:6px;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+  }
+  .ms.on .panel{display:block}
+  .panel label{
+    display:flex;align-items:center;gap:9px;padding:7px 9px;cursor:pointer;
+    font-size:13px;white-space:nowrap;
+  }
+  .panel label:hover{background:rgba(255,255,255,.05)}
+  .panel input{accent-color:var(--amber);width:14px;height:14px;cursor:pointer;margin:0}
+  .panel .sep{height:1px;background:var(--line);margin:5px 0}
+  .panel .all{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+  button.plain{
     background:none;color:var(--ink);border:1px solid var(--line);
     font-family:inherit;font-size:13px;padding:8px 14px;cursor:pointer;
   }
-  button:hover{border-color:var(--amber);color:var(--amber)}
+  button.plain:hover{border-color:var(--amber);color:var(--amber)}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
   .count{font-size:12px;color:var(--muted);text-align:right;margin:0 0 14px}
 
+  /* ---- table ---- */
   table{width:100%;border-collapse:collapse}
   thead th{
     font-size:10px;letter-spacing:.16em;text-transform:uppercase;
     color:var(--muted);font-weight:500;text-align:left;
     padding:0 12px 10px;border-bottom:1px solid var(--line);
+    cursor:pointer;user-select:none;white-space:nowrap;
   }
+  thead th:hover{color:var(--ink)}
+  thead th.sorted{color:var(--amber)}
+  thead th .arrow{opacity:.45;margin-left:5px;font-size:9px}
+  thead th.sorted .arrow{opacity:1}
   thead th.r{text-align:right}
   thead th.c{text-align:center}
   tbody td{padding:15px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
   tbody tr:hover{background:rgba(255,255,255,.022)}
-  .client{font-size:14px}
-  .sub{font-size:11px;color:var(--muted);margin-top:3px}
   td.r{text-align:right}
   td.c{text-align:center}
+  .client{font-size:14px}
+  .title{font-size:12px;color:var(--muted)}
+  mark{background:rgba(230,163,60,.28);color:var(--ink);padding:0 1px}
 
-  .pill{
-    display:inline-block;font-size:11px;padding:5px 12px;
-    border:1px solid;white-space:nowrap;
-  }
-  .pill.prog{color:var(--blue);border-color:var(--blue)}
+  .pill{display:inline-block;font-size:11px;padding:5px 12px;border:1px solid;white-space:nowrap}
+  .pill.planned{color:var(--slate);border-color:var(--slate)}
   .pill.ready{color:var(--slate);border-color:var(--slate)}
-  .pill.done{color:var(--sage);border-color:var(--sage)}
-  .pill.wait{color:var(--amber);border-color:var(--amber)}
+  .pill.prog{color:var(--blue);border-color:var(--blue)}
   .pill.review{color:var(--sage);border-color:var(--sage)}
+  .pill.wait{color:var(--amber);border-color:var(--amber)}
+  .pill.ext{color:var(--violet);border-color:var(--violet)}
+  .pill.efile{color:var(--blue);border-color:var(--blue)}
+  .pill.done{color:var(--sage);border-color:var(--sage)}
   .pill.unknown{color:var(--muted);border-color:var(--muted)}
 
-  .form{font-size:13px}
   .due{font-size:13px}
   .due .days{font-size:11px;color:var(--muted);margin-top:3px}
-  .due.late .days{color:var(--rust)}
-  .due.late .date{color:var(--rust)}
+  .due.late .days,.due.late .date{color:var(--rust)}
   .due.soon .days{color:var(--amber)}
 
   a.k{color:var(--amber);text-decoration:underline;text-underline-offset:3px;font-size:13px}
   a.k:hover{color:var(--ink)}
-
   .empty{padding:40px 12px;color:var(--muted);font-size:13px}
 
-  @media (max-width:960px){
+  @media (max-width:1080px){
     body{padding:26px 16px 60px}
     h1{font-size:32px}
     .stats{grid-template-columns:repeat(2,1fr)}
     .stat{border-bottom:1px solid var(--line)}
     .stat:nth-child(odd){border-right:1px solid var(--line)}
     .stat:nth-child(even){border-right:0}
-    thead th:nth-child(3),tbody td:nth-child(3),
     thead th:nth-child(4),tbody td:nth-child(4){display:none}
   }
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
@@ -168,45 +182,40 @@
   </p>
 
   <div class="stats" id="stats"></div>
-
   <div class="bar" id="bar"></div>
   <div class="legend" id="legend"></div>
 
   <h2>Work item register</h2>
   <div class="rule"></div>
   <p class="note">
-    Read-only. Filter to one assignee for a personal queue, or set deadline to
-    <em>Overdue</em> to see what has already slipped.
+    Read-only. Search a client, or combine filters — each dropdown allows several
+    selections. Click any column heading to sort; click again to reverse.
   </p>
 
   <div class="filters">
-    <label for="fa">Assignee</label>
-    <select id="fa"><option value="">Everyone</option></select>
-    <label for="ff">Form</label>
-    <select id="ff"><option value="">All forms</option></select>
-    <label for="fs">Status</label>
-    <select id="fs"><option value="">Any status</option></select>
-    <label for="fd">Deadline</label>
-    <select id="fd">
-      <option value="">All dates</option>
-      <option value="late">Overdue</option>
-      <option value="30">Next 30 days</option>
-      <option value="60">Next 60 days</option>
-    </select>
-    <button id="clear" type="button">Clear filters</button>
+    <div class="search">
+      <input id="q" type="search" placeholder="Search client…" autocomplete="off" aria-label="Search client name">
+      <button class="x" id="qx" type="button" aria-label="Clear search">&times;</button>
+    </div>
+    <span class="flabel">Assignee</span><div class="ms" id="ms-who"></div>
+    <span class="flabel">Form</span><div class="ms" id="ms-form"></div>
+    <span class="flabel">Status</span><div class="ms" id="ms-status"></div>
+    <span class="flabel">Deadline</span><div class="ms" id="ms-due"></div>
+    <button class="plain" id="clear" type="button">Clear filters</button>
   </div>
+
   <p class="count" id="count"></p>
 
   <table>
     <thead>
-      <tr>
-        <th>Client</th>
-        <th class="c">Status</th>
-        <th>Form</th>
-        <th>Work title</th>
-        <th>Assignee</th>
-        <th class="r">Due</th>
-        <th class="r">Karbon</th>
+      <tr id="head">
+        <th data-sort="client">Client</th>
+        <th data-sort="status" class="c">Status</th>
+        <th data-sort="form">Form</th>
+        <th data-sort="title">Work title</th>
+        <th data-sort="who">Assignee</th>
+        <th data-sort="due" class="r">Due</th>
+        <th class="r" data-nosort>Karbon</th>
       </tr>
     </thead>
     <tbody id="rows"></tbody>
@@ -215,119 +224,295 @@
 </div>
 
 <script>
-const SYNCED = "2026-08-21 06:11 UTC";
+const SYNCED = "2026-08-21 06:24 UTC";
+const TODAY = new Date("2026-08-21T00:00:00Z");
+
+/* Workflow order. Anything not listed sorts to the end, alphabetically. */
+const STATUS_ORDER = [
+  "Planned",
+  "Ready To Start",
+  "In Progress",
+  "Review",
+  "Waiting",
+  "Waiting for client",
+  "On Extension",
+  "E-File Authorization",
+  "Completed"
+];
+
+const STATUS_STYLE = {
+  "planned":["planned","var(--slate)"],
+  "ready to start":["ready","var(--slate)"],
+  "in progress":["prog","var(--blue)"],
+  "review":["review","var(--sage)"],
+  "waiting":["wait","var(--amber)"],
+  "waiting for client":["wait","var(--amber)"],
+  "send client requests":["wait","var(--amber)"],
+  "on extension":["ext","var(--violet)"],
+  "e-file authorization":["efile","var(--blue)"],
+  "completed":["done","var(--sage)"],
+  "complete":["done","var(--sage)"]
+};
+const styleFor = s => STATUS_STYLE[String(s||"").toLowerCase()] || ["unknown","var(--muted)"];
+
+/* Rank by the workflow order, case-insensitively. Unknown -> end. */
+const ORDER_INDEX = {};
+STATUS_ORDER.forEach((s,i)=>ORDER_INDEX[s.toLowerCase()]=i);
+const statusRank = s => {
+  const k = String(s||"").toLowerCase();
+  return k in ORDER_INDEX ? ORDER_INDEX[k] : STATUS_ORDER.length;
+};
 
 const DATA = [["4ysJf8lRVpJQ", "1040 Tax Returns", "Nihir Patel", "Review", "Thea Ruyeras", "2026-07-17"], ["BYPSYgMzwpZ", "1065 Tax Returns", "Alpha Sky Capital", "Review", "Romil Anhao", "2026-07-31"], ["p4jChbNr7RQ", "1040 Tax Returns - 2023", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-07"], ["YC7R1Y3Bvl4", "1040 Tax Returns - 2025", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-07"], ["2gHrzmXd3htc", "1040 Tax Returns - 2022", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-24"], ["23kjMG1RhCDb", "1040 Tax Returns - 2024", "Dana Stephenson", "In Progress", "Flor Acosta", "2026-08-24"], ["JHwZ74ZtDn3", "1120S Tax Returns - 2023", "Sport Science Lab, LLC", "Send client requests", "Romil Anhao", "2026-08-28"], ["3Ddddv2NvCp5", "1040 Tax Returns - 2022", "Gavin Macmillan", "Send client requests", "Flor Acosta", "2026-08-28"], ["zWMTRgMb6s9", "1040 Tax Returns - 2021", "Gavin Macmillan", "Send client requests", "Flor Acosta", "2026-08-28"], ["4mSnVZrF3F2W", "1040 Tax Returns - 2025", "Gavin Macmillan", "Send client requests", "Flor Acosta", "2026-08-28"], ["3RC1Vx9PbJ96", "1120S Tax Returns - 2021", "Sport Science Lab, LLC", "Waiting for client", "Romil Anhao", "2026-08-28"], ["2Hvv6NwWh48X", "1120S Tax Returns - 2022", "Sport Science Lab, LLC", "Send client requests", "Romil Anhao", "2026-08-28"], ["22WVyVStmr7S", "1120S Tax Returns - 2024", "Sport Science Lab, LLC", "Send client requests", "Romil Anhao", "2026-08-28"], ["Y6bsYS2q3vM", "1040 Tax Returns - 2024", "Gavin Macmillan", "Send client requests", "Flor Acosta", "2026-08-28"], ["3bdLpMDHfJDn", "1040 Tax Returns - 2023", "Gavin Macmillan", "Send client requests", "Flor Acosta", "2026-08-28"], ["3kGv6sZXyG6C", "1120S Tax Returns - 2025", "Sport Science Lab, LLC", "Send client requests", "Romil Anhao", "2026-08-28"], ["3lCMbN2mpVXG", "Tax 1040 — 2025", "Arun Luckoor", "Waiting for client", "Flor Acosta", "2026-09-15"], ["9YzvRWpt4q8", "1120S Tax Returns", "PRL Medical PLLC DBA: Vegas VIP Medicine", "Ready To Start", "Thea Ruyeras", "2026-09-15"], ["4c8YSsS5Cwt", "1120S Tax Returns", "Reverie Concepts", "Ready To Start", "Flor Acosta", "2026-09-15"], ["46nRmWQxrw2r", "1065 Tax Returns", "Ethos Spa Management LLC", "Ready To Start", "Thea Ruyeras", "2026-09-15"], ["XyR5wQnVRpw", "1120S Tax Returns", "Ravive Aesthetics, PLLC", "Completed", "Thea Ruyeras", "2026-09-15"], ["47ljmmdVL7x8", "1120S Tax Returns", "Rella Aesthetics Inc", "Review", "Thea Ruyeras", "2026-09-15"], ["CbWng3spZ9v", "1065 Tax Returns", "Ethos Sparta LLC", "Ready To Start", "Thea Ruyeras", "2026-09-15"], ["46lX2YPgvQqc", "Tax 1040 — 2025", "Zach Wagner", "Waiting for client", "Thea Ruyeras", "2026-09-15"], ["4fPPBrxqVDfw", "1120S Tax Returns", "BioMatrix International", "Completed", "Thea Ruyeras", "2026-09-15"], ["4gM8J6xT7np8", "Tax 1065 — 2025", "SUN RS LLC", "Ready To Start", "Thea Ruyeras", "2026-09-15"], ["2grXt5hRCLPV", "1040 Tax Returns - 2024", "Shannon Stephenson", "Waiting for client", "Flor Acosta", "2026-09-15"], ["43PWNDsNRTrG", "1120S Tax Returns", "DSEXAM Inc.", "Planned", "Flor Acosta", "2026-09-15"], ["F1bl4hwvTrd", "1120S Tax Returns", "RPL Body Rejuvenation Inc", "Planned", "Flor Acosta", "2026-09-15"], ["2lrbcvnYkFR9", "1120S Tax Returns", "Logum Consulting", "Completed", "Thea Ruyeras", "2026-09-15"], ["2BtVWYcPR6gR", "Tax 1040 — 2025", "Pavan/Saloni Luckoor", "Waiting for client", "Flor Acosta", "2026-09-15"], ["4vQh8f2gTrNw", "Tax 1040 — 2025", "Shobha Luckoor", "Waiting for client", "Flor Acosta", "2026-09-15"], ["4bchmx6RDFFg", "1040 Tax Return", "Christine Rongey", "Completed", "Flor Acosta", "2026-09-15"], ["YJ1vX3mb5jZ", "1120 Tax Return", "Collexo LLC", "Waiting for client", "Thea Ruyeras", "2026-10-15"], ["2c64XtbHlz4Q", "1040 Tax Returns", "Viraj Desai", "Ready To Start", "Flor Acosta", "2026-10-15"], ["4n9pq4grz656", "1040 Tax Return", "Neel Patel", "Completed", "Sagar Khant", "2026-10-15"], ["2cF2Ln7vkhZl", "1120 Tax Returns", "Bio-Nutrition Laboratories", "Review", "Flor Acosta", "2026-10-15"], ["3ZR6l73FCVVL", "1065 Tax Returns", "One Tooth Capital", "Ready To Start", "Thea Ruyeras", "2026-10-15"], ["N2nq5mqXqQW", "1040 Tax Returns", "Shannon Stephenson", "Waiting", "Sagar Khant", "2026-10-15"], ["3Jl1GjjlHcJL", "1040 Tax Returns", "Brendon Clarke", "Completed", "Sagar Khant", "2026-10-15"], ["4CYQQh1fND7t", "1040 Tax Returns", "Ankit Bavishi", "E-File Authorization", "Thea Ruyeras", "2026-10-15"], ["WhzgWhT1FR7", "1065 Tax Returns", "2611 Wilson LLC", "Completed", "Thea Ruyeras", "2026-10-15"], ["bqsBZGJF2cZ", "1040 Tax Returns", "Cara Hollenbeck", "Ready To Start", "Flor Acosta", "2026-10-15"], ["T9hsfCpZb9J", "1040 Tax Returns", "Sam Altman", "In Progress", "Flor Acosta", "2026-10-15"]].map(r => ({
   id:r[0], title:r[1], client:r[2], status:r[3], who:r[4], due:r[5],
-  form:(r[1].match(/1120S|1120|1065|1041|1040/)||["—"])[0],
+  form:(r[1].match(/1120S|1120|1065|1041|1040|990/)||["—"])[0],
   link:"https://app2.karbonhq.com/2GXQkWNYYRPp/work/"+r[0]
 }));
 
-const TODAY = new Date("2026-08-21T00:00:00Z");
 const dayDiff = d => Math.round((new Date(d+"T00:00:00Z") - TODAY)/86400000);
-
-const STATUS_STYLE = {
-  "In Progress":["prog","var(--blue)"],
-  "Ready To Start":["ready","var(--slate)"],
-  "Complete":["done","var(--sage)"],
-  "Waiting For Client":["wait","var(--amber)"],
-  "Waiting on Client":["wait","var(--amber)"],
-  "In Review":["review","var(--sage)"],
-  "Review":["review","var(--sage)"]
-};
-// Any status not listed above still renders, in neutral grey.
-const styleFor = s => STATUS_STYLE[s] || ["unknown","var(--muted)"];
-
 const $ = id => document.getElementById(id);
-document.getElementById("synced").textContent = SYNCED;
+$("synced").textContent = SYNCED;
 
-/* ---------- summary ---------- */
+/* Sort a status list into workflow order, unknowns alphabetical at the end. */
+function sortStatuses(list){
+  return [...list].sort((a,b)=>{
+    const ra=statusRank(a), rb=statusRank(b);
+    return ra!==rb ? ra-rb : a.localeCompare(b);
+  });
+}
+
+/* ---------------- summary ---------------- */
 function summary(){
   const late = DATA.filter(d=>dayDiff(d.due)<0);
-  const prog = DATA.filter(d=>d.status==="In Progress");
+  const prog = DATA.filter(d=>/^in progress$/i.test(d.status));
+  const ready = DATA.filter(d=>/^ready to start$/i.test(d.status));
   const next = DATA.filter(d=>dayDiff(d.due)>=0).sort((a,b)=>a.due<b.due?-1:1)[0];
   const nextCount = next ? DATA.filter(d=>d.due===next.due).length : 0;
   const fmt = s => s ? s.slice(5).replace("-","/") : "—";
 
   $("stats").innerHTML = [
     ["Work items", DATA.length, "open tax returns", ""],
-    ["Overdue", late.length, late.length ? "past the due date" : "nothing late", late.length?"warn":""],
+    ["Overdue", late.length, late.length?"past the due date":"nothing late", late.length?"warn":""],
     ["In progress", prog.length, "actively being worked", ""],
-    ["Ready to start", DATA.filter(d=>d.status==="Ready To Start").length, "not yet picked up", "hot"],
+    ["Ready to start", ready.length, "not yet picked up", "hot"],
     ["Next deadline", fmt(next&&next.due), next?dayDiff(next.due)+" days out · "+nextCount+" items":"—", ""]
   ].map(s=>`<div class="stat"><div class="k">${s[0]}</div><div class="v ${s[3]}">${s[1]}</div><div class="s">${s[2]}</div></div>`).join("");
 }
 
-/* ---------- proportion bar ---------- */
+/* ---------------- proportion bar ---------------- */
 function proportions(){
-  const known=["In Progress","Ready To Start","Complete"];
-  const seen=[...new Set(DATA.map(d=>d.status))];
-  const ordered=[...known.filter(x=>seen.includes(x)),...seen.filter(x=>!known.includes(x)).sort()];
-  const counts=ordered.map(x=>[x,DATA.filter(d=>d.status===x).length]).filter(x=>x[1]>0);
-  const total=counts.reduce((a,b)=>a+b[1],0)||1;
-  $("bar").innerHTML=counts.map(([x,n])=>
-    `<span style="width:${n/total*100}%;background:${styleFor(x)[1]}">${n}</span>`).join("");
-  $("legend").innerHTML=counts.map(([x,n])=>
-    `<div><i style="background:${styleFor(x)[1]}"></i>${x}<b>${n}</b></div>`).join("");
+  const counts = sortStatuses([...new Set(DATA.map(d=>d.status))])
+    .map(s=>[s, DATA.filter(d=>d.status===s).length]).filter(x=>x[1]>0);
+  const total = counts.reduce((a,b)=>a+b[1],0)||1;
+  $("bar").innerHTML = counts.map(([s,n])=>
+    `<span style="width:${n/total*100}%;background:${styleFor(s)[1]}" title="${s}: ${n}">${n}</span>`).join("");
+  $("legend").innerHTML = counts.map(([s,n])=>
+    `<div><i style="background:${styleFor(s)[1]}"></i>${s}<b>${n}</b></div>`).join("");
 }
 
-/* ---------- filters ---------- */
-function fill(sel,vals){
-  vals.sort().forEach(v=>{
-    const o=document.createElement("option"); o.value=v; o.textContent=v; $(sel).appendChild(o);
+/* ---------------- multi-select control ---------------- */
+const FILTERS = { who:new Set(), form:new Set(), status:new Set(), due:new Set() };
+
+function multiselect(mountId, key, options, allLabel){
+  const host = $(mountId);
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.setAttribute("aria-haspopup","true");
+  btn.setAttribute("aria-expanded","false");
+
+  const panel = document.createElement("div");
+  panel.className = "panel";
+
+  const allRow = document.createElement("label");
+  allRow.className = "all";
+  allRow.innerHTML = `<input type="checkbox" checked><span>${allLabel}</span>`;
+  const allBox = allRow.querySelector("input");
+  panel.appendChild(allRow);
+  panel.appendChild(Object.assign(document.createElement("div"),{className:"sep"}));
+
+  const boxes = options.map(([value,label])=>{
+    const row = document.createElement("label");
+    row.innerHTML = `<input type="checkbox" value="${value}"><span>${label}</span>`;
+    const box = row.querySelector("input");
+    box.addEventListener("change",()=>{
+      box.checked ? FILTERS[key].add(value) : FILTERS[key].delete(value);
+      sync(); render();
+    });
+    panel.appendChild(row);
+    return box;
+  });
+
+  allBox.addEventListener("change",()=>{
+    FILTERS[key].clear();
+    boxes.forEach(b=>b.checked=false);
+    allBox.checked = true;
+    sync(); render();
+  });
+
+  function sync(){
+    const n = FILTERS[key].size;
+    btn.textContent = n===0 ? allLabel : n===1
+      ? options.find(o=>o[0]===[...FILTERS[key]][0])[1]
+      : n + " selected";
+    allBox.checked = n===0;
+    host.classList.toggle("active", n>0);
+  }
+
+  btn.addEventListener("click",e=>{
+    e.stopPropagation();
+    const open = host.classList.contains("on");
+    document.querySelectorAll(".ms.on").forEach(m=>{
+      m.classList.remove("on");
+      m.querySelector("button").setAttribute("aria-expanded","false");
+    });
+    if(!open){ host.classList.add("on"); btn.setAttribute("aria-expanded","true"); }
+  });
+  panel.addEventListener("click",e=>e.stopPropagation());
+
+  host.appendChild(btn);
+  host.appendChild(panel);
+  sync();
+  return { reset(){ FILTERS[key].clear(); boxes.forEach(b=>b.checked=false); sync(); } };
+}
+
+document.addEventListener("click",()=>{
+  document.querySelectorAll(".ms.on").forEach(m=>{
+    m.classList.remove("on");
+    m.querySelector("button").setAttribute("aria-expanded","false");
+  });
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape") document.querySelectorAll(".ms.on").forEach(m=>m.classList.remove("on"));
+});
+
+const uniq = fn => [...new Set(DATA.map(fn))].filter(Boolean);
+
+const controls = [
+  multiselect("ms-who","who", uniq(d=>d.who).sort().map(v=>[v,v]), "Everyone"),
+  multiselect("ms-form","form", uniq(d=>d.form).sort().map(v=>[v,v]), "All forms"),
+  multiselect("ms-status","status", sortStatuses(uniq(d=>d.status)).map(v=>[v,v]), "Any status"),
+  multiselect("ms-due","due", [
+    ["late","Overdue"],["7","Next 7 days"],["30","Next 30 days"],["60","Next 60 days"]
+  ], "All dates")
+];
+
+/* ---------------- sorting ---------------- */
+let sortKey = "due", sortDir = 1;
+
+const VALUE = {
+  client: r => r.client.toLowerCase(),
+  status: r => statusRank(r.status),
+  form:   r => r.form,
+  title:  r => r.title.toLowerCase(),
+  who:    r => r.who.toLowerCase(),
+  due:    r => r.due
+};
+
+$("head").addEventListener("click",e=>{
+  const th = e.target.closest("th");
+  if(!th || th.hasAttribute("data-nosort")) return;
+  const key = th.dataset.sort;
+  if(key===sortKey){ sortDir = -sortDir; } else { sortKey = key; sortDir = 1; }
+  render();
+});
+
+function paintHead(){
+  [...$("head").children].forEach(th=>{
+    th.classList.remove("sorted");
+    const old = th.querySelector(".arrow");
+    if(old) old.remove();
+    if(th.dataset.sort===sortKey){
+      th.classList.add("sorted");
+      const a = document.createElement("span");
+      a.className = "arrow";
+      a.textContent = sortDir===1 ? "▲" : "▼";
+      th.appendChild(a);
+    }
   });
 }
-fill("fa",[...new Set(DATA.map(d=>d.who))]);
-fill("ff",[...new Set(DATA.map(d=>d.form))]);
-fill("fs",[...new Set(DATA.map(d=>d.status))]);
+
+/* ---------------- render ---------------- */
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function highlight(text, term){
+  const safe = esc(text);
+  if(!term) return safe;
+  const i = safe.toLowerCase().indexOf(term.toLowerCase());
+  if(i<0) return safe;
+  return safe.slice(0,i)+"<mark>"+safe.slice(i,i+term.length)+"</mark>"+safe.slice(i+term.length);
+}
 
 function render(){
-  const a=$("fa").value, f=$("ff").value, s=$("fs").value, d=$("fd").value;
-  const rows=DATA.filter(r=>{
-    if(a&&r.who!==a) return false;
-    if(f&&r.form!==f) return false;
-    if(s&&r.status!==s) return false;
-    const n=dayDiff(r.due);
-    if(d==="late"&&n>=0) return false;
-    if(d==="30"&&(n<0||n>30)) return false;
-    if(d==="60"&&(n<0||n>60)) return false;
+  const term = $("q").value.trim();
+  $("qx").style.display = term ? "block" : "none";
+
+  const rows = DATA.filter(r=>{
+    if(term && !r.client.toLowerCase().includes(term.toLowerCase())) return false;
+    if(FILTERS.who.size    && !FILTERS.who.has(r.who))       return false;
+    if(FILTERS.form.size   && !FILTERS.form.has(r.form))     return false;
+    if(FILTERS.status.size && !FILTERS.status.has(r.status)) return false;
+    if(FILTERS.due.size){
+      const n = dayDiff(r.due);
+      const ok = [...FILTERS.due].some(v =>
+        v==="late" ? n<0 : (n>=0 && n<=Number(v))
+      );
+      if(!ok) return false;
+    }
     return true;
-  }).sort((x,y)=>x.due<y.due?-1:x.due>y.due?1:0);
+  });
+
+  const get = VALUE[sortKey] || VALUE.due;
+  rows.sort((a,b)=>{
+    const x=get(a), y=get(b);
+    if(x<y) return -sortDir;
+    if(x>y) return sortDir;
+    return a.due<b.due?-1:a.due>b.due?1:0;   // stable secondary sort
+  });
+
+  paintHead();
 
   $("count").textContent = rows.length===DATA.length
     ? `Showing all ${DATA.length} items`
     : `Showing ${rows.length} of ${DATA.length} items`;
 
   if(!rows.length){
-    $("rows").innerHTML=`<tr><td colspan="7" class="empty">No work items match these filters. Clear one to widen the search.</td></tr>`;
+    $("rows").innerHTML =
+      `<tr><td colspan="7" class="empty">No work items match. Clear a filter to widen the search.</td></tr>`;
     return;
   }
 
-  $("rows").innerHTML=rows.map(r=>{
-    const n=dayDiff(r.due);
-    const cls=n<0?"late":n<=14?"soon":"";
-    const days=n<0?`${Math.abs(n)} days overdue`:n===0?"due today":`${n} days out`;
+  $("rows").innerHTML = rows.map(r=>{
+    const n = dayDiff(r.due);
+    const cls = n<0 ? "late" : n<=14 ? "soon" : "";
+    const days = n<0 ? `${Math.abs(n)} days overdue` : n===0 ? "due today" : `${n} days out`;
     return `<tr>
-      <td class="client">${r.client}</td>
-      <td class="c"><span class="pill ${styleFor(r.status)[0]}">${r.status}</span></td>
-      <td class="form">${r.form}</td>
-      <td class="sub" style="font-size:12px">${r.title}</td>
-      <td>${r.who}</td>
+      <td class="client">${highlight(r.client, term)}</td>
+      <td class="c"><span class="pill ${styleFor(r.status)[0]}">${esc(r.status)}</span></td>
+      <td>${esc(r.form)}</td>
+      <td class="title">${esc(r.title)}</td>
+      <td>${esc(r.who)}</td>
       <td class="r"><div class="due ${cls}"><div class="date">${r.due.slice(5).replace("-","/")}</div><div class="days">${days}</div></div></td>
       <td class="r"><a class="k" href="${r.link}" target="_blank" rel="noopener">Open</a></td>
     </tr>`;
   }).join("");
 }
 
-["fa","ff","fs","fd"].forEach(id=>$(id).addEventListener("change",render));
-$("clear").addEventListener("click",()=>{["fa","ff","fs","fd"].forEach(id=>$(id).value="");render();});
+/* ---------------- wiring ---------------- */
+let debounce;
+$("q").addEventListener("input",()=>{ clearTimeout(debounce); debounce=setTimeout(render,120); });
+$("qx").addEventListener("click",()=>{ $("q").value=""; $("q").focus(); render(); });
+$("clear").addEventListener("click",()=>{
+  $("q").value="";
+  controls.forEach(c=>c.reset());
+  render();
+});
 
 try {
   summary(); proportions(); render();
 } catch (err) {
   console.error(err);
   $("rows").innerHTML =
-    `<tr><td colspan="7" class="empty">Something went wrong rendering this table (${err.message}). The data is still in the page source.</td></tr>`;
+    `<tr><td colspan="7" class="empty">Could not render the table (${esc(err.message)}). Data is still present in the page source.</td></tr>`;
 }
 </script>
 </body>
